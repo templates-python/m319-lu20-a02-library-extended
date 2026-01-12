@@ -1,30 +1,10 @@
+import json
+from datetime import datetime
+
 import pytest
+
 from library import show_balance, read_int, read_date, read_rental, add_rental, init_books
 from rental import Rental
-from datetime import datetime
-import json
-
-@pytest.fixture
-def sample_books_filled():
-    books = {
-        'LOTR 1': [
-            Rental(datetime(2023, 1, 5), datetime(2023, 3, 6), 5),
-        ],
-        'LOTR 2': [
-            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
-        ],
-        'LOTR 3': [
-            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
-            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
-        ],
-    }
-    return books
-
-
-@pytest.fixture
-def empty_books():
-    with open('books.json', 'r') as file:
-        return json.load(file)
 
 
 def test_show_balance(sample_books_filled, capsys):
@@ -43,8 +23,6 @@ Statement for LOTR 3
 Total: CHF 263.6
 """
     assert captured.out == expected_output
-
-
 
 
 def test_init_books(empty_books):
@@ -132,3 +110,26 @@ def test_read_date_invalid_input(monkeypatch, capsys):
     captured = capsys.readouterr()
     assert date == datetime(2023, 1, 5)  # Should return the valid date
     assert captured.out == 'Please enter a valid date.\nPlease enter a valid date.\n'  # Error messages should be printed
+
+
+@pytest.fixture
+def sample_books_filled():
+    books = {
+        'LOTR 1': [
+            Rental(datetime(2023, 1, 5), datetime(2023, 3, 6), 5),
+        ],
+        'LOTR 2': [
+            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
+        ],
+        'LOTR 3': [
+            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
+            Rental(datetime(2023, 1, 6), datetime(2023, 2, 23), 10),
+        ],
+    }
+    return books
+
+
+@pytest.fixture
+def empty_books():
+    with open('books.json', 'r') as file:
+        return json.load(file)
