@@ -9,8 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  if: ${{ !contains(github.actor, 'classroom') && !contains(github.event.head_commit.message, 'NOACTION') }}
   grading:
-    if: ${{ !contains(github.actor, 'classroom') }}
+    if: ${{ !contains(github.actor, 'classroom') && !contains(github.event.head_commit.message, 'NOACTION') }}
     uses: BZZ-Commons/pygrader/.github/workflows/py_autograding.yml@main
     secrets: inherit
